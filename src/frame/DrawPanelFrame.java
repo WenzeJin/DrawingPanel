@@ -9,8 +9,8 @@ import utils.*;
 
 public class DrawPanelFrame extends JFrame {
 
-    private Canvas canvas;
-    private CommandedCanvas cmdCanvas;
+    private final Canvas canvas;
+    private final CommandedCanvas cmdCanvas;
 
 
     public DrawPanelFrame() {
@@ -22,6 +22,8 @@ public class DrawPanelFrame extends JFrame {
         cmdCanvas = new CommandedCanvas(canvas);    //将其绑定到受命令控制的画布
 
         initUI();
+
+        canvas.requestFocusInWindow();
     }
 
     public void canvasRequestFocusInWindow(){
@@ -41,9 +43,13 @@ public class DrawPanelFrame extends JFrame {
         JButton addCircleBt = new JButton("圆形");
         addCircleBt.addActionListener(e -> canvas.setNewShape("Circle"));
 
+        JButton CopyButton = new JButton("复制选中");
+        CopyButton.addActionListener(e -> canvas.copySelectedShape());
+
         jp.add(undoButton);
         jp.add(redoButton);
         jp.add(addCircleBt);
+        jp.add(CopyButton);
 
         add(jp, BorderLayout.NORTH);
         add(new JScrollPane(canvas), BorderLayout.CENTER);

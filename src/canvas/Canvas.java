@@ -31,12 +31,14 @@ public class Canvas extends JPanel {
 
         setBackground(Color.WHITE);
 
+        /*
+        Add Mouse and Keyboard Listener.
+         */
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 requestFocusInWindow();
                 Point p = e.getPoint();
-                DPLogger.success("MousePressed");
 
                 // first check if this action is to add Shape
                 if (selectedNewShape != null) {
@@ -47,15 +49,16 @@ public class Canvas extends JPanel {
                     if (!isCtrlPressed) {
                         selectedShapes.clear();
                     }
+
                     int select = selectShape(p);
                     if (select == 0) {
+                        // this is where nothing is clicked
                         selectedShapes.clear();
                     }
-                    // this is where nothing is clicked
+
                 }
 
                 repaint();
-                // selectShape(e.getPoint());
             }
         });
 
@@ -64,7 +67,7 @@ public class Canvas extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_CONTROL && !Config.OS.contains("mac")
                         || e.getKeyCode() == KeyEvent.VK_META && Config.OS.contains("mac") ) {
-                    DPLogger.success("KeyControlPressed");
+                    DPLogger.success("Key Control Pressed");
                     isCtrlPressed = true;
                 }
             }
@@ -73,14 +76,13 @@ public class Canvas extends JPanel {
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_CONTROL && !Config.OS.contains("mac")
                         || e.getKeyCode() == KeyEvent.VK_META && Config.OS.contains("mac") ) {
+                    DPLogger.success("Key Control Released");
                     isCtrlPressed = false;
                 }
             }
         });
 
-
         setFocusable(true);
-
     }
 
     public int selectShape(Point point) {
@@ -88,7 +90,6 @@ public class Canvas extends JPanel {
         Select all shapes that can catch this point.
         Return: number of this selection
          */
-        // TODO: this logic will be modified, when CONTROL key is supported.
         int cnt = 0;
         List<Shape> shapes = shapeManager.getShapes();
         for (Shape shape : shapes) {
@@ -103,6 +104,18 @@ public class Canvas extends JPanel {
 
     public void setNewShape(String newShape) {
         selectedNewShape = newShape;
+    }
+
+    public void copySelectedShape() {
+        if (!selectedShapes.isEmpty()) {
+            CopyShapesCmd cmd = new CopyShapesCmd();
+            for (Shape shape : selectedShapes) {
+                cmd.addShape(shape);
+            }
+            commandManager.doCommand(cmd);
+            DPLogger.success("Copy Selected Shape: " + selectedShapes.size());
+        }
+        repaint();
     }
 
     public void forceClearState() {
@@ -122,7 +135,9 @@ public class Canvas extends JPanel {
         commandManager.doCommand(cmd);
         DPLogger.success("Added Shape: " + selectedNewShape + "at " + x + ", " + y);
         repaint();
-        selectedNewShape = null;
+        if (!isCtrlPressed) {
+            selectedNewShape = null;
+        }
     }
 
     @Override
@@ -144,5 +159,7 @@ public class Canvas extends JPanel {
             }
         }
     }
+
+
 
 }

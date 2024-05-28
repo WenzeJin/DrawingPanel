@@ -22,12 +22,11 @@ public class Main {
 
         // show DrawPanelFrame
 
-        SwingUtilities.invokeLater(() -> {
-            DrawPanelFrame frame = new DrawPanelFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setVisible(true);
-            frame.canvasRequestFocusInWindow();
-        });
+
+        DrawPanelFrame frame = new DrawPanelFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
 
     }
 }

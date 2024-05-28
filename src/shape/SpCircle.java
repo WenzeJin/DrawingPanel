@@ -10,8 +10,8 @@ import config.Config;
 public class SpCircle implements Shape {
     private int radius;
     private Point center;
-    private CriticalPoint centerCP;     // type 0
-    private CriticalPoint edgeCP;       // type 1
+    private final CriticalPoint centerCP;     // type 0
+    private final CriticalPoint edgeCP;       // type 1
     private Color color;
 
     public SpCircle() {
@@ -24,7 +24,7 @@ public class SpCircle implements Shape {
 
     public void setRadius(int radius) {
         this.radius = radius;
-        edgeCP = new CriticalPoint(center.x + radius, center.y, 1);
+        edgeCP.x = center.x + radius;
     }
 
     @Override

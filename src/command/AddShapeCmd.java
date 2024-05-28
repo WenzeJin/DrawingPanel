@@ -3,7 +3,7 @@ package command;
 import shape.*;
 
 public class AddShapeCmd implements Command {
-    private Shape shape;
+    private final Shape shape;
     public AddShapeCmd(Shape shape) {
         this.shape = shape;
     }

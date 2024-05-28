@@ -3,6 +3,7 @@ package shape;
 import java.awt.*;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,12 @@ public class CompositeShape implements Shape {
     private int size;
 
     private Point pos;
+
+    CompositeShape() {
+        children = new ArrayList<>();
+        deltaMap = new HashMap<>();
+        size = 0;
+    }
 
     @Override
     public void draw(Graphics g) {

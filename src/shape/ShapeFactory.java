@@ -2,7 +2,7 @@ package shape;
 
 public class ShapeFactory {
     public static Shape createShape(String shapeType) {
-        Shape shape = null;
+        Shape shape;
         switch (shapeType) {
             case "Circle":
                 shape = new SpCircle();
