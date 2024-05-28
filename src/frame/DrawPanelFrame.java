@@ -1,6 +1,7 @@
 package frame;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +73,7 @@ public class DrawPanelFrame extends JFrame {
         JButton saveButton = new JButton("保存");
         saveButton.addActionListener(e -> handleSave());
 
-        JButton loadButton = new JButton("加载");
+        JButton loadButton = new JButton("打开");
         loadButton.addActionListener(e -> handleLoad());
 
         editPanel.add(undoButton);
@@ -134,7 +135,13 @@ public class DrawPanelFrame extends JFrame {
     }
 
     private void handleSave(){
+
         JFileChooser chooser = new JFileChooser(new File(Config.USER_DIR));
+        ExtensionFileFilter filter = new ExtensionFileFilter();
+        filter.setDescription("DrawPanel文件(*.dps)");
+        filter.addExtension("dps");
+        chooser.setFileFilter(filter);
+
         int option = chooser.showSaveDialog(this);
         if(option == JFileChooser.APPROVE_OPTION){
             File file = chooser.getSelectedFile();
@@ -148,7 +155,14 @@ public class DrawPanelFrame extends JFrame {
     }
 
     private void handleLoad(){
+
         JFileChooser chooser = new JFileChooser(new File(Config.USER_DIR));
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY | JFileChooser.OPEN_DIALOG);
+        ExtensionFileFilter filter = new ExtensionFileFilter();
+        filter.setDescription("DrawPanel文件(*.dps)");
+        filter.addExtension("dps");
+        chooser.setFileFilter(filter);
+
         int option = chooser.showSaveDialog(this);
         if(option == JFileChooser.APPROVE_OPTION){
             File file = chooser.getSelectedFile();

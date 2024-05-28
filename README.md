@@ -2,11 +2,11 @@
 
 This is a drawing software based on Java Swing. This project is my practice of applying design patterns.
 
-## Project Structure（v0.1）
+## Project Structure（v0.2.1）
 
 > This image may be out of date.
 
-![UML](uml.png)
+![Structure](structure.png)
 
 ## Design Patterns
 
