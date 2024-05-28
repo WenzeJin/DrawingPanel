@@ -51,5 +51,8 @@ public class CommandManager {
         }
     }
 
-
+    public void forceClearState() {
+        commandStack.clear();
+        redoStack.clear();
+    }
 }

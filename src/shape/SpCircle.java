@@ -1,7 +1,5 @@
 package shape;
 
-import utils.CriticalPoint;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +16,8 @@ public class SpCircle implements Shape {
         this.radius = 50;
         this.center = new Point();
         this.color = Color.BLACK;
-        centerCP = new CriticalPoint(center.x, center.y, 0);
-        edgeCP = new CriticalPoint(center.x + radius, center.y, 1);
+        centerCP = new CriticalPoint(center.x, center.y, 0, this);
+        edgeCP = new CriticalPoint(center.x + radius, center.y, 1, this);
     }
 
     public void setRadius(int radius) {
@@ -76,6 +74,10 @@ public class SpCircle implements Shape {
                 center.y = criticalPoint.y;
                 centerCP.y = criticalPoint.y;
                 radius = criticalPoint.x - center.x;
+                if (radius < 0) {
+                    radius = 5;
+                    edgeCP.x = center.x + radius;
+                }
             }
         }
     }
@@ -92,8 +94,19 @@ public class SpCircle implements Shape {
 
     @Override
     public Shape copy() {
-        Shape sp = new SpCircle();
+        SpCircle sp = new SpCircle();
         sp.setPosition(center.x + Config.COPY_BIAS, center.y + Config.COPY_BIAS);
+        sp.setColor(this.color);
+        sp.setRadius(radius);
         return sp;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
     }
 }

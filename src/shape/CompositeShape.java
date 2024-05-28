@@ -9,7 +9,6 @@ import java.util.Map;
 
 import config.Config;
 import utils.PosDelta;
-import utils.CriticalPoint;
 
 public class CompositeShape implements Shape {
     @Serial
@@ -20,11 +19,15 @@ public class CompositeShape implements Shape {
     private int size;
 
     private Point pos;
+    private final CriticalPoint posCP;
+    private Rectangle bounds;
 
-    CompositeShape() {
+    public CompositeShape() {
         children = new ArrayList<>();
         deltaMap = new HashMap<>();
         size = 0;
+        pos = new Point(0, 0);
+        posCP = new CriticalPoint(0 ,0 ,0, this);
     }
 
     @Override
@@ -37,6 +40,8 @@ public class CompositeShape implements Shape {
     @Override
     public void setPosition(int x, int y) {
         pos = new Point(x, y);
+        posCP.setLocation(pos);
+        bounds.setLocation(pos);
         for (Shape child : children) {
             assert(deltaMap.containsKey(child));
             PosDelta delta = deltaMap.get(child);
@@ -50,16 +55,21 @@ public class CompositeShape implements Shape {
         for (Shape child : children) {
             criticalPoints.addAll(child.getCriticalPoints());
         }
+        criticalPoints.add(posCP);
         return criticalPoints;
     }
 
     @Override
     public void setCriticalPoint(CriticalPoint criticalPoint) {
-        for (Shape child : children) {
-            List<CriticalPoint> criticalPoints = child.getCriticalPoints();
-            if (criticalPoints.contains(criticalPoint)) {
-                child.setCriticalPoint(criticalPoint);
-                break;
+        if (criticalPoint == posCP) {
+            setPosition(posCP.x, posCP.y);
+        } else {
+            for (Shape child : children) {
+                List<CriticalPoint> criticalPoints = child.getCriticalPoints();
+                if (criticalPoints.contains(criticalPoint)) {
+                    child.setCriticalPoint(criticalPoint);
+                    break;
+                }
             }
         }
     }
@@ -75,6 +85,7 @@ public class CompositeShape implements Shape {
         for (Shape child : children) {
             if (child.canSelect(point)) {
                 flag = true;
+                break;
             }
         }
         return flag;
@@ -83,7 +94,6 @@ public class CompositeShape implements Shape {
     @Override
     public Shape copy() {
         CompositeShape cp = new CompositeShape();
-        cp.setPosition(pos.x + Config.COPY_BIAS, pos.y + Config.COPY_BIAS);
         for (Shape child : children) {
             cp.addChild(child.copy());
         }
@@ -97,6 +107,16 @@ public class CompositeShape implements Shape {
         }
     }
 
+    @Override
+    public Color getColor() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getBounds(){
+        return bounds;
+    }
+
     public void addChild(Shape child) {
         children.add(child);
         PosDelta delta = new PosDelta();
@@ -105,13 +125,40 @@ public class CompositeShape implements Shape {
         delta.dY = childPos.y - pos.y;
         deltaMap.put(child, delta);
         size++;
+
+        refreshBounds(child);
     }
 
-    public void removeChild(Shape child) {
-        if (children.contains(child)) {
-            children.remove(child);
-            deltaMap.remove(child);
-            size--;
+    private void refreshBounds(Shape child) {
+        Rectangle childBounds = child.getBounds();
+        boolean changed = false;
+        int temp = 0;
+        if (childBounds.x < bounds.x || size == 0) {
+            changed = true;
+            temp = bounds.x;
+            bounds.x = childBounds.x;
+            bounds.width += temp - bounds.x;
+        }
+        if (childBounds.y < bounds.y || size == 0) {
+            changed = true;
+            temp = bounds.y;
+            bounds.y = childBounds.y;
+            bounds.height += temp - bounds.y;
+        }
+        if (childBounds.x + childBounds.width > bounds.x + bounds.width|| size == 0) {
+            bounds.width += childBounds.x + childBounds.width - bounds.x - bounds.width;
+        }
+        if (childBounds.y + childBounds.height > bounds.y + bounds.height|| size == 0) {
+            bounds.height += childBounds.y + childBounds.height - bounds.y - bounds.height;
+        }
+        if (changed) {
+            for (Shape shape: children) {
+                PosDelta delta = new PosDelta();
+                Point childPos = shape.getPosition();
+                delta.dX = childPos.x - pos.x;
+                delta.dY = childPos.y - pos.y;
+                deltaMap.put(shape, delta);
+            }
         }
     }
 }

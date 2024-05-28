@@ -1,7 +1,5 @@
 package shape;
 
-import utils.CriticalPoint;
-
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +13,8 @@ public interface Shape extends Serializable {
 
     void setColor(Color color);
 
+    Color getColor();
+
     Point getPosition();
 
     List<CriticalPoint> getCriticalPoints();  // get critical control points of this shape
@@ -24,5 +24,7 @@ public interface Shape extends Serializable {
     boolean canSelect(Point point);
 
     Shape copy();
+
+    Rectangle getBounds();
 
 }
