@@ -8,7 +8,7 @@ This is a drawing software based on Java Swing. This project is my practice of a
 
 > This image is up-to-date. 此图为最新版本。
 
-![Structure](structure.png)
+![Structure](st.png)
 
 > [!WARNING]
 > This project uses the MIT open-source license. The related copyright notice and permission notice shall be included in all copies or substantial portions of the Software.
