@@ -18,6 +18,9 @@ public class DrawPanelFrame extends JFrame {
 
     private JPanel selectedColorPanel;
 
+    private JTextArea stringInput;
+    private JLabel logger;
+
 
     public DrawPanelFrame() {
 
@@ -42,9 +45,11 @@ public class DrawPanelFrame extends JFrame {
 
         JPanel editPanel = getEditPanel();
         JPanel colorPanel = getColorPanel();
+        JPanel stringPanel = getStringPanel();
 
         add(editPanel, BorderLayout.NORTH);
         add(colorPanel, BorderLayout.EAST);
+        add(stringPanel, BorderLayout.SOUTH);
 
         add(new JScrollPane(canvas), BorderLayout.CENTER);
     }
@@ -113,6 +118,29 @@ public class DrawPanelFrame extends JFrame {
         colorPanel.add(selectedColorLabel);
         colorPanel.add(selectedColorPanel);
         return colorPanel;
+    }
+
+    private JPanel getStringPanel() {
+        JPanel stringPanel = new JPanel();
+
+        stringInput = new JTextArea();
+        stringInput.setColumns(20);
+        stringInput.setEditable(true);
+
+        JButton confirmButton = new JButton("添加标签");
+        confirmButton.addActionListener(e -> handleStringDecorate());
+
+        logger = new JLabel();
+
+        stringPanel.add(stringInput);
+        stringPanel.add(confirmButton);
+        stringPanel.add(logger);
+
+        return stringPanel;
+    }
+
+    private void handleStringDecorate(){
+        canvas.decorateSelectedShape(stringInput.getText());
     }
 
     private void handleExportToImage(){

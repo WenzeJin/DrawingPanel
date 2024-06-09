@@ -243,16 +243,25 @@ public class Canvas extends JPanel {
         ImageIO.write(image, "jpg", file);
     }
 
-    public void setSelectedColor(Color color) {
-        selectedColor = color;
-    }
-
     public Color getSelectedColor() {
         return selectedColor;
     }
 
+    public void setSelectedColor(Color color) {
+        selectedColor = color;
+    }
 
-
+    public void decorateSelectedShape(String content) {
+        if (!selectedShapes.isEmpty()) {
+            StringDecorateCmd cmd = new StringDecorateCmd();
+            for (Shape shape : selectedShapes) {
+                cmd.addShape(shape, content);
+            }
+            CommandManager.getInstance().doCommand(cmd);
+            DPLogger.success("Decorated Selected Shape: " + selectedShapes.size() + "With String: " + content);
+        }
+        repaint();
+    }
 
 
 }

@@ -133,25 +133,32 @@ public class CompositeShape implements Shape {
         Rectangle childBounds = child.getBounds();
         boolean changed = false;
         int temp = 0;
-        if (childBounds.x < bounds.x || size == 0) {
+        if (size == 1) {
+            bounds = new Rectangle(childBounds);
             changed = true;
-            temp = bounds.x;
-            bounds.x = childBounds.x;
-            bounds.width += temp - bounds.x;
-        }
-        if (childBounds.y < bounds.y || size == 0) {
-            changed = true;
-            temp = bounds.y;
-            bounds.y = childBounds.y;
-            bounds.height += temp - bounds.y;
-        }
-        if (childBounds.x + childBounds.width > bounds.x + bounds.width|| size == 0) {
-            bounds.width += childBounds.x + childBounds.width - bounds.x - bounds.width;
-        }
-        if (childBounds.y + childBounds.height > bounds.y + bounds.height|| size == 0) {
-            bounds.height += childBounds.y + childBounds.height - bounds.y - bounds.height;
+        } else {
+            if (childBounds.x < bounds.x) {
+                changed = true;
+                temp = bounds.x;
+                bounds.x = childBounds.x;
+                bounds.width += temp - bounds.x;
+            }
+            if (childBounds.y < bounds.y) {
+                changed = true;
+                temp = bounds.y;
+                bounds.y = childBounds.y;
+                bounds.height += temp - bounds.y;
+            }
+            if (childBounds.x + childBounds.width > bounds.x + bounds.width) {
+                bounds.width += childBounds.x + childBounds.width - bounds.x - bounds.width;
+            }
+            if (childBounds.y + childBounds.height > bounds.y + bounds.height) {
+                bounds.height += childBounds.y + childBounds.height - bounds.y - bounds.height;
+            }
         }
         if (changed) {
+            pos.setLocation(bounds.x, bounds.y);
+            posCP.setLocation(pos);
             for (Shape shape: children) {
                 PosDelta delta = new PosDelta();
                 Point childPos = shape.getPosition();

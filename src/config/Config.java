@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Config {
 
-    public static final String  VERSION = "0.3";
+    public static final String  VERSION = "0.4";
     public static final int     COPY_BIAS = 20;
     public static final int     CP_SIZE = 10;
 
