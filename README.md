@@ -2,7 +2,7 @@
 
 This is a drawing software based on Java Swing. This project is my practice of applying design patterns.
 
-这是一个基于 Java Swing 的绘图软件。本项目是我应用设计模式的练习。
+这是一个基于 Java Swing 的绘图软件。本项目是我应用设计模式的练习，是南京大学《面向对象设计》的课程项目。
 
 ## Project Structure (v1.0) 项目结构（v1.0）
 
