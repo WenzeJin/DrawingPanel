@@ -2,15 +2,14 @@ package shape;
 
 public class ShapeFactory {
     public static Shape createShape(String shapeType) {
-        Shape shape;
-        switch (shapeType) {
-            case "Circle":
-                shape = new SpCircle();
-                break;
+        return switch (shapeType) {
+            case "Circle" -> new SpCircle();
+            case "Rectangle" -> new SpRectangle();
+            case "Triangle" -> new SpTriangle();
+            case "Line" -> new SpLine();
+            case "Ellipse" -> new SpEllipse();
             // TODO: add more shapes
-            default:
-                throw new IllegalArgumentException("Unknown shape type: " + shapeType);
-        }
-        return shape;
+            default -> throw new IllegalArgumentException("Unknown shape type: " + shapeType);
+        };
     }
 }

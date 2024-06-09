@@ -8,18 +8,15 @@ import java.util.List;
 
 
 public class CopyShapesCmd implements Command {
-    private List<Shape> prototype;
     private List<Shape> copy;
     private boolean executed = false;
 
     public CopyShapesCmd() {
-        prototype = new ArrayList<>();
         copy = new ArrayList<>();
     }
 
     public void addShape(Shape shape) {
         if(!executed){
-            prototype.add(shape);
             copy.add(shape.copy());
         }
 

@@ -1,6 +1,8 @@
 package utils;
 
-public class PosDelta {
+import java.io.Serializable;
+
+public class PosDelta implements Serializable {
     public int dX;
     public int dY;
 }

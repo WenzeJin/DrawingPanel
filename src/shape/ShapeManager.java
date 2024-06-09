@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShapeManager implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     private static ShapeManager instance;
 

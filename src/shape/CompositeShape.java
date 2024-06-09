@@ -11,8 +11,6 @@ import config.Config;
 import utils.PosDelta;
 
 public class CompositeShape implements Shape {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     private List<Shape> children;
     private Map<Shape, PosDelta> deltaMap;
@@ -72,6 +70,7 @@ public class CompositeShape implements Shape {
                 }
             }
         }
+        resetBounds();
     }
 
     @Override
@@ -132,7 +131,7 @@ public class CompositeShape implements Shape {
     private void refreshBounds(Shape child) {
         Rectangle childBounds = child.getBounds();
         boolean changed = false;
-        int temp = 0;
+        int temp;
         if (size == 1) {
             bounds = new Rectangle(childBounds);
             changed = true;
@@ -159,13 +158,42 @@ public class CompositeShape implements Shape {
         if (changed) {
             pos.setLocation(bounds.x, bounds.y);
             posCP.setLocation(pos);
-            for (Shape shape: children) {
-                PosDelta delta = new PosDelta();
-                Point childPos = shape.getPosition();
-                delta.dX = childPos.x - pos.x;
-                delta.dY = childPos.y - pos.y;
-                deltaMap.put(shape, delta);
+            resetDelta();
+        }
+    }
+
+    private void resetBounds() {
+        if (size > 0) {
+            int XMin, XMax, YMin, YMax;
+            Rectangle childBounds = children.get(0).getBounds();
+            XMin = childBounds.x;
+            YMin = childBounds.y;
+            XMax = XMin + childBounds.width;
+            YMax = YMin + childBounds.height;
+            for (Shape child : children) {
+                Rectangle cb = child.getBounds();
+                XMin = Math.min(cb.x, XMin);
+                XMax = Math.max(cb.x + cb.width, XMax);
+                YMin = Math.min(cb.y, YMin);
+                YMax = Math.max(cb.y + cb.height, YMax);
             }
+            bounds.setLocation(XMin, YMin);
+            bounds.setSize(XMax - XMin, YMax - YMin);
+            pos.setLocation(XMin, YMin);
+            posCP.setLocation(pos);
+            resetDelta();
+        }
+    }
+
+    private void resetDelta() {
+        System.out.println("resetDelta");
+        for (Shape shape: children) {
+            PosDelta deltaOld = deltaMap.get(shape);
+            PosDelta delta = new PosDelta();
+            Point childPos = shape.getPosition();
+            delta.dX = childPos.x - pos.x;
+            delta.dY = childPos.y - pos.y;
+            deltaMap.put(shape, delta);
         }
     }
 }

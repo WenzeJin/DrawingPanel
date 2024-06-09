@@ -71,7 +71,7 @@ public class StringDecorator implements Shape {
 
     @Override
     public Rectangle getBounds() {
-        Rectangle childBounds = child.getBounds();
+        Rectangle childBounds = new Rectangle(child.getBounds());
         childBounds.setSize(child.getBounds().width, child.getBounds().height + 10);
         return childBounds;
     }

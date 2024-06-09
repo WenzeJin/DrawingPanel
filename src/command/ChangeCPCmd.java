@@ -1,6 +1,8 @@
 package command;
 
 import shape.CriticalPoint;
+import shape.Shape;
+import shape.ShapeManager;
 
 import java.awt.*;
 
@@ -19,11 +21,15 @@ public class ChangeCPCmd implements Command {
 
     public void execute() {
         selectedCP.setLocation(newPos);
-        selectedCP.getParent().setCriticalPoint(selectedCP);
+        for (Shape shape: ShapeManager.getInstance().getShapes()) {
+            shape.setCriticalPoint(selectedCP);
+        }
     }
 
     public void undo() {
         selectedCP.setLocation(oldPos);
-        selectedCP.getParent().setCriticalPoint(selectedCP);
+        for (Shape shape: ShapeManager.getInstance().getShapes()) {
+            shape.setCriticalPoint(selectedCP);
+        }
     }
 }

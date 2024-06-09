@@ -5,7 +5,8 @@ import java.awt.*;
 
 public class Config {
 
-    public static final String  VERSION = "0.4";
+    public static final String  VERSION = "1.0";
+    public static final String  AUTHOR = "WenzeJin";
     public static final int     COPY_BIAS = 20;
     public static final int     CP_SIZE = 10;
 
@@ -14,6 +15,6 @@ public class Config {
     public static final String  USER_DIR = System.getProperty("user.dir");
     public static final Color[] COLORS = new Color[] {
             Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE,
-            Color.CYAN, Color.PINK, Color.GRAY, Color.BLACK
+            Color.CYAN, Color.PINK, Color.GRAY, Color.BLACK, Color.MAGENTA,
     };
 }

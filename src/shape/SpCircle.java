@@ -41,8 +41,7 @@ public class SpCircle implements Shape {
 
     @Override
     public void setPosition(int x, int y) {
-        Point p = new Point(x, y);
-        center = p;
+        center = new Point(x, y);
         centerCP.x = center.x; centerCP.y = center.y;
         edgeCP.x = center.x + radius; edgeCP.y = center.y;
     }
@@ -85,11 +84,7 @@ public class SpCircle implements Shape {
     @Override
     public boolean canSelect(Point point) {
         double dist = center.distance(point);
-        if (dist < (double)radius) {
-            return true;
-        } else {
-            return false;
-        }
+        return dist < (double) radius;
     }
 
     @Override

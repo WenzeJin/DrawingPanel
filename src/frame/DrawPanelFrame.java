@@ -1,7 +1,6 @@
 package frame;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +23,8 @@ public class DrawPanelFrame extends JFrame {
 
     public DrawPanelFrame() {
 
-        setTitle("Draw Panel" + " -v" + Config.VERSION);    //设置显示窗口标题
-        setSize(1000,600);    //设置窗口显示尺寸
+        setTitle("Draw Panel" + " -v" + Config.VERSION + " -by " + Config.AUTHOR);    //设置显示窗口标题
+        setSize(1300,800);    //设置窗口显示尺寸
 
         canvas = new Canvas();      //初始化画布
         cmdCanvas = new CommandedCanvas(canvas);    //将其绑定到受命令控制的画布
@@ -66,11 +65,29 @@ public class DrawPanelFrame extends JFrame {
         JButton addCircleBt = new JButton("圆形");
         addCircleBt.addActionListener(e -> canvas.setNewShape("Circle"));
 
+        JButton addRectBt = new JButton("矩形");
+        addRectBt.addActionListener(e -> canvas.setNewShape("Rectangle"));
+
+        JButton addTriBt = new JButton("三角形");
+        addTriBt.addActionListener(e -> canvas.setNewShape("Triangle"));
+
+        JButton addLineBt = new JButton("直线");
+        addLineBt.addActionListener(e -> canvas.setNewShape("Line"));
+
+        JButton addEllipseBt = new JButton("椭圆");
+        addEllipseBt.addActionListener(e -> canvas.setNewShape("Ellipse"));
+
         JButton copyButton = new JButton("复制选中");
         copyButton.addActionListener(e -> canvas.copySelectedShape());
 
+        JButton deleteButton = new JButton("删除选中");
+        deleteButton.addActionListener(e -> canvas.removeSelectedShape());
+
         JButton colorButton = new JButton("重新着色");
         colorButton.addActionListener(e -> canvas.changeSelectedShapeColor());
+
+        JButton compositeButton = new JButton("组合");
+        compositeButton.addActionListener(e -> handleComposite());
 
         JButton exportButton = new JButton("导出图片");
         exportButton.addActionListener(e -> handleExportToImage());
@@ -84,8 +101,14 @@ public class DrawPanelFrame extends JFrame {
         editPanel.add(undoButton);
         editPanel.add(redoButton);
         editPanel.add(addCircleBt);
+        editPanel.add(addRectBt);
+        editPanel.add(addTriBt);
+        editPanel.add(addLineBt);
+        editPanel.add(addEllipseBt);
         editPanel.add(copyButton);
+        editPanel.add(deleteButton);
         editPanel.add(colorButton);
+        editPanel.add(compositeButton);
         editPanel.add(exportButton);
         editPanel.add(saveButton);
         editPanel.add(loadButton);
@@ -143,6 +166,10 @@ public class DrawPanelFrame extends JFrame {
         canvas.decorateSelectedShape(stringInput.getText());
     }
 
+    private void handleComposite(){
+        canvas.compositeSelectedShape();
+    }
+
     private void handleExportToImage(){
         JFileChooser chooser = new JFileChooser(new File(Config.USER_DIR));
         int option = chooser.showSaveDialog(this);
@@ -177,7 +204,7 @@ public class DrawPanelFrame extends JFrame {
                 ShapeManager.saveToFile(file);
                 DPLogger.success("Save successful to " + file.getAbsolutePath());
             } catch(IOException e){
-                DPLogger.error("Save failed");
+                throw new RuntimeException(e);
             }
         }
     }
@@ -197,17 +224,10 @@ public class DrawPanelFrame extends JFrame {
             try{
                 ShapeManager.loadFromFile(file);
                 DPLogger.success("Load successful from " + file.getAbsolutePath());
-            } catch(IOException e){
-                DPLogger.error("Load failed");
-            } catch (ClassNotFoundException e) {
+            } catch(IOException | ClassNotFoundException e){
                 throw new RuntimeException(e);
             }
             cmdCanvas.forceClearState();
         }
-    }
-
-
-    public static void main(String[] args) {
-        new DrawPanelFrame();
     }
 }

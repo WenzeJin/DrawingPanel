@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 public class StringDecorateCmd implements Command {
-    private List<StringDecorator> decorated;
+
     private List<Shape> original;
     private Map<Shape, StringDecorator> o2dMap;
     boolean executed = false;
 
     public StringDecorateCmd() {
-        decorated = new ArrayList<>();
         original = new ArrayList<>();
         o2dMap = new HashMap<>();
     }
@@ -25,7 +24,6 @@ public class StringDecorateCmd implements Command {
         if (!executed) {
             StringDecorator decorator = new StringDecorator(sp, content);
             original.add(sp);
-            decorated.add(decorator);
             o2dMap.put(sp, decorator);
         }
     }

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Canvas extends JPanel {
     // State vars
-    private List<Shape> selectedShapes;
+    private final List<Shape> selectedShapes;
     private CriticalPoint selectedCP;
     private String selectedNewShape;
     private Color selectedColor;
@@ -257,11 +257,35 @@ public class Canvas extends JPanel {
             for (Shape shape : selectedShapes) {
                 cmd.addShape(shape, content);
             }
+            selectedShapes.clear();
             CommandManager.getInstance().doCommand(cmd);
             DPLogger.success("Decorated Selected Shape: " + selectedShapes.size() + "With String: " + content);
         }
         repaint();
     }
 
+    public void removeSelectedShape() {
+        if (!selectedShapes.isEmpty()) {
+            RemoveCmd cmd = new RemoveCmd();
+            for (Shape shape : selectedShapes) {
+                cmd.addShape(shape);
+            }
+            selectedShapes.clear();
+            CommandManager.getInstance().doCommand(cmd);
+        }
+        repaint();
+    }
+
+    public void compositeSelectedShape() {
+        if (!selectedShapes.isEmpty()) {
+            CompositeCmd cmd = new CompositeCmd();
+            for (Shape shape : selectedShapes) {
+                cmd.addShape(shape);
+            }
+            selectedShapes.clear();
+            CommandManager.getInstance().doCommand(cmd);
+        }
+        repaint();
+    }
 
 }
