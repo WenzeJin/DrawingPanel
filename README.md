@@ -16,17 +16,17 @@ This is a drawing software based on Java Swing. This project is my practice of a
 
 ## Design Patterns 设计模式
 
-### 1. Abstract Factory 抽象工厂模式
+### 1. Factory （简单）工厂模式
 
-The `ShapeFactory` class uses the Abstract Factory pattern to create different types of shapes. This allows for the creation of families of related or dependent objects without specifying their concrete classes.
+The `ShapeFactory` class uses the Factory pattern to create different types of shapes. This allows for the creation of families of related or dependent objects without specifying their concrete classes.
 
-`ShapeFactory` 类使用抽象工厂模式来创建不同类型的形状。这使得可以创建一系列相关或相互依赖的对象，而无需指定它们的具体类。
+`ShapeFactory` 类使用简单工厂模式来创建不同类型的形状。这使得可以创建一系列相关或相互依赖的对象，而无需指定它们的具体类。
 
 ### 2. Composite 组合模式
 
-The `GroupShape` class implements the Composite pattern, allowing individual shapes and groups of shapes to be treated uniformly. This is useful for operations that can be applied to both single shapes and groups of shapes.
+The `CompositeShape` class implements the Composite pattern, allowing individual shapes and groups of shapes to be treated uniformly. This is useful for operations that can be applied to both single shapes and groups of shapes.
 
-`GroupShape` 类实现了组合模式，使得可以统一处理单个形状和形状组。这对于可以同时应用于单个形状和形状组的操作非常有用。
+`CompositeShape` 类实现了组合模式，使得可以统一处理单个形状和形状组。这对于可以同时应用于单个形状和形状组的操作非常有用。
 
 ### 3. Singleton 单例模式
 
